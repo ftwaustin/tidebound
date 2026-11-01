@@ -6,7 +6,7 @@ export const partial = "tidebound";
 export default defineRailway(() => {
   const tidebound = service("tidebound", {
     source: github("ftwaustin/tidebound", { branch: "main", checkSuites: true }),
-    build: { buildEnvironment: "V3", dockerfilePath: "/Dockerfile" },
+    build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/Dockerfile" },
     healthcheck: "/health",
     healthcheckTimeout: 30,
     deploy: { restartPolicyMaxRetries: 3 },
