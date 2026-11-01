@@ -47,12 +47,18 @@ Open `http://localhost:3000`. `npm test` runs the simulation and real Socket.IO 
 - Rooms live in memory. Use **one Railway replica**. A server restart or deployment ends active runs; there is no persistent save system.
 - Railway uses the included Dockerfile, `PORT=3000`, and `/health` endpoint.
 - Personal Railway project: `a2babe3e-d0e0-4316-9fdb-6fb5e4e98370`; service: `tidebound`.
+- Production source: `ftwaustin/tidebound`, branch `main`. Railway waits for the GitHub Actions **CI** workflow to pass before deploying a push.
+- Infrastructure configuration lives in `.railway/railway.ts`. It preserves one replica and leaves environment variables unmanaged; credentials stay outside Git.
 
-To publish a later edit from this linked folder:
+To publish an application change:
 
 ```sh
-railway up --service tidebound --detach
+git add <changed-files>
+git commit -m "Describe the change"
+git push origin main
 ```
+
+Pull requests also run CI. No Railway deployment token is needed in GitHub Actions: Railway's native GitHub integration deploys successful pushes. For infrastructure changes, use the current Railway CLI to review `railway config plan`, then apply with `railway config apply`.
 
 ## Audio assets
 

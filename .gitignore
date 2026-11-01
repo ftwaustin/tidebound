@@ -1,5 +1,6 @@
 node_modules/
 .env*
-.railway/
+.railway/*
+!.railway/railway.ts
 artifacts/
 .DS_Store
