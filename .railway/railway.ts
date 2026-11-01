@@ -6,10 +6,10 @@ export const partial = "tidebound";
 export default defineRailway(() => {
   const tidebound = service("tidebound", {
     source: github("ftwaustin/tidebound", { branch: "main", checkSuites: true }),
-    build: { buildEnvironment: "V3", builder: "DOCKERFILE" },
+    build: { buildEnvironment: "V3", dockerfilePath: "/Dockerfile" },
     healthcheck: "/health",
     healthcheckTimeout: 30,
-    deploy: { restartPolicyType: "ON_FAILURE", restartPolicyMaxRetries: 3 },
+    deploy: { restartPolicyMaxRetries: 3 },
     replicas: { "sfo": 1 },
   });
 
