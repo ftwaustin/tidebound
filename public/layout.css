@@ -1,0 +1,259 @@
+/* A viewport-sized cabinet: equal HUD columns keep the playfield centered. */
+html,body{width:100%;height:100%;overflow:hidden}
+.site-wrap{--hud-width:clamp(240px,14vw,300px);width:100%;max-width:none;height:100dvh;margin:0;padding:8px 12px;display:grid;grid-template-rows:56px minmax(0,1fr) auto;gap:8px;overflow:hidden;background:#000}
+.site-wrap:fullscreen{width:100%;height:100dvh;max-width:none}
+.masthead{height:56px;min-width:0;margin:0;gap:24px}
+.masthead nav{flex-shrink:0}
+.arcade-stage{min-width:0;min-height:0;container-type:size;display:grid;place-items:center}
+.arcade,.playing .arcade{display:grid;grid-template-columns:var(--hud-width) minmax(0,1fr) var(--hud-width);width:min(100cqw,calc((100cqh - 8px)*1.6 + var(--hud-width)*2 + 8px));height:min(100cqh,calc((100cqw - var(--hud-width)*2 - 8px)/1.6 + 8px));min-width:0;min-height:0;max-height:100%;margin:0;overflow:hidden}
+.play-column{min-width:0;min-height:0;border:0;display:flex}
+.viewport,.playing .viewport{flex:1;min-width:0;min-height:0;width:100%;height:100%;max-height:none;aspect-ratio:8/5}
+.status-sidebar,.sidebar,.playing .sidebar{display:flex;flex-direction:column;min-width:0;min-height:0;padding:12px;overflow:hidden;background:#000}
+.status-sidebar{border-right:2px solid #4253c8}
+.sidebar,.playing .sidebar{border-left:2px solid #4253c8;border-top:0}
+.game-toolbar{height:auto;min-height:0;padding:0 0 10px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;border-bottom:2px solid #4253c8;line-height:1.5}
+.status-sidebar .game-hud,.playing .status-sidebar .game-hud{position:static;display:block;padding:12px 0;border-bottom:2px solid #45519c}
+.status-sidebar .player-heading{display:block;margin:0 0 10px;font-size:16px}
+.status-sidebar .score-readout,.status-sidebar .health-readout{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:8px 0}
+.status-sidebar .score-readout strong{font-size:24px}
+.status-sidebar .health-readout strong{font-size:20px}
+.status-sidebar .health-track{display:block;margin-top:8px}
+.status-sidebar #health-hint{display:block;font-size:16px;line-height:1.5}
+.status-sidebar .inventory-bar{display:grid;grid-template-columns:1fr 1fr;min-height:0;border:0;margin-top:10px}
+.status-sidebar .inventory-item{min-width:0;min-height:0;justify-content:flex-start;gap:6px;padding:6px 0;border:0;flex:none}
+.status-sidebar .inventory-item>canvas{width:28px;height:28px}
+.status-sidebar .inventory-item strong{font-size:22px}
+.status-sidebar .inventory-item>div>span{font-size:16px}
+.status-sidebar .objective{grid-column:1/-1;width:auto;padding:12px 0 0;border:0;flex:none}
+.status-sidebar .objective strong,.status-sidebar .objective span{font-size:16px;line-height:1.5}
+.status-sidebar .location{font-size:16px;line-height:1.5;gap:6px;margin-top:auto;padding-top:16px}
+#start-guide{padding-top:12px}
+#start-guide h2{margin-bottom:8px}
+#start-guide>p{line-height:1.5;margin:7px 0}
+.enemy-examples{margin:10px 0}
+.enemy-examples>div{gap:8px;margin-bottom:6px}
+.enemy-examples canvas{width:36px;height:36px}
+.enemy-examples span{line-height:1.5}
+#start-guide .guide-warning{display:none}
+.site-wrap:not(.playing) .status-sidebar .location{display:none}
+.site-wrap:not(.playing) .status-sidebar .inventory-bar{display:none}
+#crew-panel{min-height:0;display:flex;flex-direction:column;height:100%}
+.panel-heading{padding:0;flex-shrink:0}
+.panel-heading h2{margin:0}
+#crew-list{gap:6px;margin-top:10px;flex-shrink:0}
+.crew-member{gap:8px;padding:3px 0;min-height:32px}
+.crew-member>div{min-width:0;flex:1}
+.crew-member canvas{width:32px;height:32px}
+.crew-member strong{line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crew-member small{display:none}
+.crew-hp{height:5px;margin-top:4px}
+.invite-strip{padding:10px 0;flex-shrink:0}
+.map-heading{margin:10px 0 6px}
+#minimap{width:100%;height:auto;min-height:40px;max-height:140px;object-fit:contain;flex:1}
+.map-legend{gap:6px;line-height:1.5;margin:6px 0}
+.depth-progress{margin:8px 0;flex-shrink:0}
+#leave-btn{margin-top:auto;min-height:40px;flex-shrink:0}
+.controls-strip,.playing .controls-strip{display:flex;min-height:56px;padding:4px 0;gap:6px 16px;justify-content:center;min-width:0;line-height:1.5}
+.controls-strip .text-button{padding:4px 0}
+.item-guide{grid-template-columns:1fr;margin:0;min-height:0;border:0;background:none}
+.item-guide>div{min-height:60px;padding:8px 0;gap:8px;border-bottom:2px solid #29305c!important;border-right:0!important}
+.item-guide>div:last-child{border-right:0!important}
+.item-guide canvas{width:32px;height:32px}
+.item-guide p{line-height:1.4}
+.item-guide b,.item-guide p>span{font-size:16px;white-space:normal}
+.attract{justify-content:safe center;padding:12px 16px}
+.attract h1{font-size:28px;line-height:1.5;margin:0 0 4px}
+.menu-intro{line-height:1.5;margin:0 0 10px}
+.class-list{gap:8px}
+.class-card{min-height:110px;padding:4px}
+.class-card canvas{width:64px;height:52px}
+.class-card strong{line-height:1.5}
+.class-card small{line-height:1.4}
+.class-detail{min-height:0;margin:8px 0;line-height:1.5}
+.name-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.name-row label{display:block;margin:0}
+.start-actions{grid-template-columns:1fr 1fr;gap:10px}
+.join-form{flex-wrap:nowrap;gap:10px;margin-top:10px}
+.join-form label{flex-basis:auto}
+.center-overlay{align-items:safe center}
+.lobby-person{min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lobby-overlay{padding:12px}
+#lobby-overlay h2{font-size:22px;line-height:1.4;margin:6px 0}
+#lobby-overlay p{line-height:1.5;margin:8px 0}
+.room-code{padding:8px 16px;margin:4px 0}
+.room-code small{margin-top:4px}
+.lobby-fish{margin:6px 0}
+.lobby-person canvas{height:48px;width:56px}
+#lobby-overlay .primary{margin-top:8px}
+
+@media(max-width:1500px){.masthead .tagline{display:none}}
+@media(min-width:1280px) and (max-width:1500px){.status-sidebar .inventory-item>canvas{display:none}}
+@media(max-height:900px){
+  .site-wrap:not(.playing) .status-sidebar .game-hud{display:none}
+  .playing #mode-label{display:none}
+  .attract h1{font-size:22px;line-height:1.4}
+  .attract{padding:8px 12px}
+  .menu-intro{margin-bottom:6px}
+  .class-card{min-height:96px}
+  .class-card canvas{width:52px;height:44px}
+  .class-card small,.class-detail>span{display:none}
+  .class-detail{margin:6px 0}
+  .class-detail strong{margin:0;line-height:1.4}
+  .panel-heading h2,.panel-heading>span{font-size:16px}
+  .map-heading{display:none}
+  #crew-list{gap:4px;margin-top:6px}
+  .crew-member canvas{width:28px;height:28px}
+  .crew-member{padding:2px 0}
+  #minimap{max-height:110px}
+  .status-sidebar #health-hint{display:none}
+  .status-sidebar .location #canvas-hint{display:none}
+  .enemy-examples{display:none}
+}
+@media(max-height:720px){
+  .site-wrap{grid-template-rows:44px minmax(0,1fr) auto;padding-block:4px;gap:6px}
+  .masthead{height:44px}
+  .controls-strip,.playing .controls-strip{min-height:44px}
+  .status-sidebar,.sidebar{padding:8px}
+  .game-toolbar{gap:3px;padding-bottom:6px}
+  .status-sidebar .game-hud,.playing .status-sidebar .game-hud{padding:6px 0}
+  .status-sidebar .player-heading{margin-bottom:4px}
+  .status-sidebar .score-readout,.status-sidebar .health-readout{margin:4px 0}
+  .status-sidebar .location{display:none}
+  .status-sidebar .objective{padding-top:6px}
+  .status-sidebar .inventory-bar{margin-top:4px}
+  .crew-member strong{line-height:1.2}
+  .crew-member canvas{width:24px;height:24px}
+  .invite-strip{padding:6px 0}
+  #minimap{max-height:84px}
+  .map-legend{margin:4px 0}
+  .depth-progress{margin:6px 0}
+  .class-card{min-height:88px}
+  .class-card canvas{height:36px}
+  .item-guide canvas{width:28px;height:28px}
+  .item-guide>div{min-height:50px}
+  #start-guide .enemy-examples{display:none}
+}
+
+/* Compact screens put status above and crew/map below the centered playfield. */
+@media(max-width:1279px){
+  .site-wrap{padding-inline:6px;grid-template-rows:48px minmax(0,1fr) auto;gap:6px}
+  .masthead{height:48px;gap:12px}
+  .masthead .brand{font-size:20px}
+  .masthead nav{gap:12px}
+  .masthead .text-button{font-size:16px}
+  .arcade,.playing .arcade{width:100%;height:100%;display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;min-height:0}
+  .status-sidebar{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding:8px;border:0;border-bottom:2px solid #4253c8}
+  .status-sidebar .game-toolbar{grid-column:1/-1;flex-direction:row;justify-content:space-between;border:0;padding:0;gap:8px}
+  .status-sidebar .game-hud,.playing .status-sidebar .game-hud{padding:0;border:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+  .status-sidebar .player-heading,.status-sidebar .health-track,.status-sidebar #health-hint,.status-sidebar .location,#start-guide{display:none}
+  .status-sidebar .score-readout,.status-sidebar .health-readout{margin:0;gap:2px}
+  .status-sidebar .score-readout strong,.status-sidebar .health-readout strong{font-size:18px}
+  .status-sidebar .inventory-bar{margin:0;align-self:center;gap:8px}
+  .status-sidebar .inventory-item{padding:0;gap:6px}
+  .status-sidebar .inventory-item>canvas{width:24px;height:24px}
+  .status-sidebar .inventory-item strong{font-size:18px}
+  .status-sidebar .objective{display:none}
+  .play-column{width:100%;height:100%;aspect-ratio:auto;display:grid;place-items:center;container-type:size}
+  .playing .viewport{flex:none;width:min(100cqw,calc(100cqh*1.6));height:min(100cqh,calc(100cqw/1.6))}
+  .playing .viewport:has(#lobby-overlay:not([hidden])){width:100%;height:100%;aspect-ratio:auto}
+  .sidebar,.playing .sidebar{border:0;border-top:2px solid #4253c8;padding:6px 8px;max-height:150px}
+  #crew-panel{display:grid;grid-template-columns:minmax(0,1fr) 112px;grid-template-rows:auto auto;gap:4px 12px;height:auto}
+  .panel-heading,.map-heading,.map-legend,.depth-progress{display:none}
+  #crew-list{grid-column:1;grid-row:1;display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;margin:0;min-width:0}
+  .crew-member{gap:5px;padding:0;min-height:28px;flex-direction:row;align-items:center}
+  .crew-member canvas{width:24px;height:24px}
+  .crew-member strong{line-height:1.2}
+  .crew-hp{height:4px;margin-top:3px}
+  .invite-strip{grid-column:1;grid-row:2;padding:0;border:0;justify-content:flex-start;gap:12px}
+  .invite-strip .text-button{padding:0}
+  #minimap{grid-column:2;grid-row:1;width:112px;height:65px;min-height:0;max-height:none}
+  #leave-btn{grid-column:2;grid-row:2;min-height:28px;padding:0 6px;margin:0}
+  .playing .controls-strip{padding:0;gap:4px 12px}
+  .controls-strip>span{font-size:16px}
+  .controls-strip>span:nth-child(2){display:block}
+  .site-wrap:not(.playing) .arcade{display:block}
+  .site-wrap:not(.playing) .status-sidebar,.site-wrap:not(.playing) .sidebar{display:none}
+  .site-wrap:not(.playing) .play-column{width:100%;height:100%;aspect-ratio:auto}
+  .site-wrap:not(.playing) .viewport{aspect-ratio:auto}
+  .item-guide{display:none}
+  .class-card{min-height:100px}
+  .class-list{grid-template-columns:1fr 1fr}
+  .class-detail>span,.class-card small{display:none}
+  .attract{justify-content:safe center;padding:12px}
+  #selection-panel{max-width:650px}
+}
+@media(max-width:650px){
+  .site-wrap{grid-template-rows:76px minmax(0,1fr) auto}
+  .masthead{height:76px;flex-wrap:wrap;justify-content:center;gap:0}
+  .masthead .brand{width:100%;text-align:center}
+  .masthead nav{width:100%;margin:0;justify-content:center}
+  #fullscreen-btn,#sound-btn{display:block}
+  .masthead .brand{font-size:18px}
+  .masthead nav{gap:10px}
+  #sound-btn{display:none}
+  .masthead .text-button{font-size:16px}
+  .masthead #fullscreen-btn{font-size:0}
+  #fullscreen-btn:after{content:'FULLSCREEN';font-size:16px}
+  #fullscreen-btn[aria-pressed=true]:after{content:'WINDOWED'}
+  .site-wrap:not(.playing) .controls-strip{display:none}
+  #lobby-overlay .overlay-card>p:first-of-type{display:none}
+  .status-sidebar{grid-template-columns:1fr;gap:6px;padding:6px 8px}
+  .status-sidebar .game-toolbar{display:none}
+  .status-sidebar .game-hud,.playing .status-sidebar .game-hud{grid-template-columns:1fr 1fr;gap:6px}
+  .status-sidebar .score-readout,.status-sidebar .health-readout{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:2px}
+  .status-sidebar .score-readout strong,.status-sidebar .health-readout strong{font-size:16px}
+  .status-sidebar .inventory-bar{display:flex;flex-wrap:wrap;justify-content:space-between}
+  .status-sidebar .inventory-item{display:flex;flex:none}
+  .status-sidebar .inventory-item>div{display:flex;gap:8px;align-items:center}
+  .status-sidebar .objective{display:block;border:0;padding:0;flex-basis:100%;max-width:none;width:100%}
+  .status-sidebar .objective strong{font-size:16px;margin:0}
+  .status-sidebar .objective span{display:none}
+  .class-list{gap:8px}
+  .class-card{min-height:96px}
+  .class-card canvas{width:48px;height:40px}
+  .class-detail{margin:8px 0}
+  .name-row{display:block}
+  .name-row label{margin-bottom:6px}
+  .join-form{flex-wrap:wrap;gap:8px}
+  .join-form label{flex-basis:100%}
+  .join-form input{width:auto}
+  .start-actions{grid-template-columns:1fr 1fr}
+  .start-actions button{min-height:44px;padding:6px}
+  .playing .controls-strip>span{display:none}
+  .playing .controls-strip{min-height:28px}
+  .down-message{bottom:110px}
+  .toast{bottom:110px;padding:8px;line-height:1.5}
+  .touch-controls{bottom:10px}
+  #joystick{width:72px;height:72px}
+  #joystick i{left:13px;top:13px}
+  #touch-fire{width:64px;height:64px}
+}
+
+@media(max-width:1279px) and (max-height:600px) and (orientation:landscape){
+  #lobby-overlay{padding-block:6px}
+  #lobby-overlay h2{margin:0}
+  #lobby-overlay .primary{margin-top:0}
+  #lobby-overlay .overlay-card{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;align-items:center}
+  #lobby-overlay h2,#lobby-overlay .primary,#waiting-host{grid-column:1/-1}
+  #lobby-overlay .overlay-card>p:first-of-type{display:none}
+  .lobby-fish{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+  .site-wrap{--hud-width:160px}
+  .playing .arcade{grid-template-columns:var(--hud-width) minmax(0,1fr) var(--hud-width);grid-template-rows:1fr;width:min(100cqw,calc((100cqh - 8px)*1.6 + var(--hud-width)*2 + 8px));height:min(100cqh,calc((100cqw - var(--hud-width)*2 - 8px)/1.6 + 8px))}
+  .playing .status-sidebar{display:block;border:0;border-right:2px solid #4253c8;padding:6px}
+  .playing .status-sidebar .game-toolbar{display:none}
+  .playing .status-sidebar .game-hud{display:block;padding:0 0 4px}
+  .playing .status-sidebar .score-readout,.playing .status-sidebar .health-readout{margin:0;gap:0}
+  .playing .status-sidebar .score-readout strong,.playing .status-sidebar .health-readout strong{font-size:16px}
+  .playing .status-sidebar .inventory-bar{grid-template-columns:1fr;gap:4px}
+  .playing .status-sidebar .inventory-item>div{display:flex;gap:8px}
+  .playing .status-sidebar .inventory-item>canvas,.playing .status-sidebar .objective{display:none}
+  .playing .sidebar{border:0;border-left:2px solid #4253c8;max-height:none;padding:6px}
+  .playing #crew-panel{display:flex;height:100%;gap:4px}
+  .playing #crew-list{display:flex;flex-direction:column}
+  .playing .crew-member{min-height:24px}
+  .playing .invite-strip{display:none}
+  .playing #minimap{width:100%;height:auto;max-height:65px;flex:1}
+  .playing #leave-btn{min-height:28px;margin-top:auto}
+  .playing .controls-strip>span{display:none}
+  .playing .controls-strip{min-height:28px}
+}

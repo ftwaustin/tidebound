@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#000000"><meta name="description" content="An ocean arcade dungeon for 1–4 players. Destroy the nests, collect food, and find the exit.">
+  <title>Tidebound — The Ocean Dungeon</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preload" href="/assets/arcade.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/style.css?v=layout2">
+  <link rel="stylesheet" href="/layout.css?v=layout2">
+</head>
+<body>
+<div class="site-wrap">
+  <header class="masthead"><a class="brand" href="/" aria-label="Tidebound home">TIDEBOUND</a><span class="tagline">THE OCEAN DUNGEON</span><nav><button id="help-btn" class="text-button">GAME GUIDE</button><button id="sound-btn" class="text-button" aria-label="Enable sound"><span id="sound-label">SOUND ON</span></button><button id="fullscreen-btn" class="text-button" aria-label="Toggle fullscreen">FULLSCREEN</button></nav></header>
+  <div class="arcade-stage">
+  <main class="arcade">
+    <aside class="status-sidebar" aria-label="Player status">
+      <div class="game-toolbar"><span id="mode-label">CHOOSE YOUR FISH</span><span id="depth-label">DEPTH 01 / 06</span></div>
+      <div class="score-panel game-hud" id="game-hud"><div class="player-heading"><span id="fish-name">REEF RANGER</span><span class="player-tag">PLAYER 1</span></div><div class="score-readout"><span>SCORE</span><strong id="score">000000</strong></div><div class="health-readout"><span>HEALTH</span><strong id="health-number">125 / 125</strong></div><div class="health-track"><i id="health-fill"></i></div><p id="health-hint">EAT FOOD TO STAY ALIVE</p></div>
+      <div id="start-guide"><h2>HOW TO SURVIVE</h2><p><b>1.</b> FIND THE EXIT</p><p><b>2.</b> EAT TO HEAL</p><p><b>3.</b> SHOOT THE NESTS</p><div class="enemy-examples"><div><canvas data-sprite="crab"></canvas><span>MONSTER<br>SHOOT IT!</span></div><div><canvas data-sprite="nest"></canvas><span>NEST<br>DESTROY IT!</span></div></div><p class="guide-warning">NESTS KEEP MAKING MONSTERS!</p></div>
+      <div class="inventory-bar"><div class="inventory-item"><canvas data-sprite="key" aria-hidden="true"></canvas><div><span>KEYS</span><strong id="keys-count">00</strong></div></div><div class="inventory-item"><canvas data-sprite="shell" aria-hidden="true"></canvas><div><span>MAGIC <kbd>Q</kbd></span><strong id="shells-count">03</strong></div></div><div class="objective"><strong id="objective-label">YOUR MISSION</strong><span id="objective-text">Find any EXIT. Keep moving.</span></div></div>
+      <div class="location"><span id="location-label">SIX DUNGEON DEPTHS</span><span id="canvas-hint">FIND ANY EXIT</span></div>
+    </aside>
+    <section class="play-column" aria-label="Dungeon game">
+
+      <div class="viewport" id="viewport">
+        <canvas id="game" tabindex="0" aria-label="Ocean dungeon. WASD to move, arrows to aim and fire, mouse to aim, click or Space to stand and shoot, Q for special."></canvas>
+        <div id="attract" class="attract">
+          <h1>THE DROWNED KEEP</h1><p class="menu-intro">1–4 PLAYER CO-OP</p>
+          <div id="selection-panel">
+            <div class="class-list" id="class-list" role="group" aria-label="Choose your fish class"></div>
+            <div class="class-detail"><strong id="special-name">TIDAL BURST</strong><span id="special-description">Clear a path with a crushing wave.</span></div>
+            <div class="name-row"><label for="player-name">YOUR NAME</label><input id="player-name" maxlength="16" placeholder="Little Fish" autocomplete="nickname"></div>
+            <div class="start-actions"><button id="solo-btn" class="primary">PLAY SOLO</button><button id="create-btn" class="secondary">CREATE CREW</button></div>
+            <form id="join-form" class="join-form"><label for="room-input">JOIN CREW</label><input id="room-input" placeholder="CODE" maxlength="5" autocapitalize="characters" autocomplete="off"><button aria-label="Join crew">JOIN</button></form>
+            <p id="connection-error" class="error-text" role="alert"></p>
+          </div>
+        </div>
+        <div id="toast" class="toast" role="status"></div>
+        <div id="depth-banner" class="depth-banner" hidden><span id="banner-kicker">DEPTH 01</span><h2 id="banner-title"></h2><p id="banner-subtitle"></p></div>
+        <div id="lobby-overlay" class="center-overlay" hidden><div class="overlay-card"><h2>GATHER YOUR CREW</h2><p>Share the code. Up to four fish.<br>Friends can join during play.</p><button class="room-code" id="copy-code" title="Copy invite link"><span id="big-code"></span><small>COPY INVITE LINK</small></button><div id="lobby-fish" class="lobby-fish"></div><button id="start-btn" class="primary">START DUNGEON</button><p id="waiting-host" hidden>WAITING FOR CAPTAIN...</p></div></div>
+        <div id="end-overlay" class="center-overlay" hidden><div class="overlay-card end-card"><span id="end-kicker"></span><h2 id="end-title"></h2><p id="end-description"></p><div class="run-stats"><div><strong id="end-score"></strong><span>CREW SCORE</span></div><div><strong id="end-kills"></strong><span>MONSTERS</span></div></div><button class="primary" id="retry-btn">PLAY AGAIN</button><button class="secondary" id="end-home-btn">CHOOSE YOUR FISH</button></div></div>
+        <div id="down-message" class="down-message" hidden>YOU ARE DOWN!<span>A friend can hold E nearby to revive you.</span></div>
+        <div class="touch-controls" id="touch-controls" hidden><div id="joystick"><i></i></div><div class="touch-actions"><button id="touch-revive" aria-label="Revive">E</button><button id="touch-special" aria-label="Special attack">Q</button><button id="touch-fire" aria-label="Shoot">FIRE</button></div></div>
+      </div>
+
+    </section>
+    <aside class="sidebar">
+      <div id="crew-panel" hidden><div class="panel-heading"><h2>YOUR CREW</h2><span id="crew-size">1/4</span></div><div id="crew-list"></div><div class="invite-strip"><span>CODE <b id="small-code"></b></span><button id="invite-btn" class="text-button">COPY</button></div><div class="map-heading">DUNGEON MAP</div><canvas id="minimap" width="270" height="160" aria-label="Explored dungeon map"></canvas><div class="map-legend"><span>YOU</span><span>NEST</span><span>EXIT</span></div><div class="depth-progress" id="depth-progress"></div><button id="leave-btn" class="secondary" aria-label="Leave dungeon">LEAVE</button></div>
+
+  <section class="item-guide" aria-label="Dungeon item guide"><div><canvas data-sprite="key"></canvas><p><b>KEY</b><span>OPENS GATES</span></p></div><div><canvas data-sprite="food"></canvas><p><b>FOOD</b><span>+48 HEALTH</span></p></div><div><canvas data-sprite="pearl"></canvas><p><b>PEARL</b><span>+250 SCORE</span></p></div><div><canvas data-sprite="shell"></canvas><p><b>MAGIC</b><span>+1 CHARGE</span></p></div><div><canvas data-sprite="nest"></canvas><p><b>NEST</b><span>SHOOT IT!</span></p></div><div><canvas data-sprite="exit"></canvas><p><b>EXIT</b><span>NEXT DEPTH</span></p></div></section>
+    </aside>
+  </main>
+  </div>
+  <section class="controls-strip"><span><kbd>WASD</kbd> MOVE</span><span><kbd>ARROWS</kbd> AIM + FIRE</span><span><kbd>MOUSE</kbd> AIM</span><span><kbd>SPACE / CLICK</kbd> FIRE</span><span><kbd>Q</kbd> MAGIC</span><span><kbd>E</kbd> REVIVE</span><button id="pause-btn" class="text-button" hidden>PAUSE</button><span id="controls-tail" hidden></span></section>
+
+<dialog id="help-dialog"><button id="close-help" class="dialog-close" aria-label="Close instructions">X</button><h2>KNOW YOUR DUNGEON</h2><p>Find any EXIT to descend. Nests keep making monsters: destroy them or fight your way past. On depth six, defeat the Drowned King first.</p><div class="help-items"><div><canvas data-sprite="key"></canvas><p><b>GOLD KEY</b>Opens one gate. Shared by your crew.</p></div><div><canvas data-sprite="food"></canvas><p><b>SEAWEED PLATE</b>+48 health. Saved until you need at least 24. Crews of 3–4 get two servings.</p></div><div><canvas data-sprite="pearl"></canvas><p><b>PEARL TREASURE</b>+250 crew score.</p></div><div><canvas data-sprite="shell"></canvas><p><b>MAGIC POTION</b> +1 special charge. Press Q to use it.</p></div><div><canvas data-sprite="nest"></canvas><p><b>CORAL NEST</b>Keeps making monsters. Shoot it!</p></div><div><canvas data-sprite="exit"></canvas><p><b>WHIRLPOOL EXIT</b>Swim into any exit. On depth six, defeat the king first.</p></div></div><h2>KNOW YOUR ENEMIES</h2><p>Green, yellow, and red pips mean strength 1, 2, or 3. Ranger shots take 1, 2, or 3 hits. Puffer shots hit twice as hard; Lion and Oracle shots also hit harder. Stronger nests make stronger monsters; later depths spawn faster.</p><div class="help-items"><div><canvas data-sprite="eel"></canvas><p><b>GHOST EEL</b>Fast rush. One painful hit, then it disappears.</p></div><div><canvas data-sprite="crab"></canvas><p><b>CRAB GRUNT</b>Slow crowds. Keeps clawing at close range.</p></div><div><canvas data-sprite="jelly"></canvas><p><b>FIRE JELLY</b>Shoots along clear corridors. Its bolts hurt more than its bite.</p></div><div><canvas data-sprite="lobster"></canvas><p><b>ROCK LOBBER</b>Flees and throws over walls. Move out of orange landing circles!</p></div><div><canvas data-sprite="squid"></canvas><p><b>SHADE SQUID</b>Shots pass through while invisible. Fire when it appears.</p></div><div><canvas data-sprite="reaper"></canvas><p><b>MANTA REAPER</b>Drains health. Only Q magic can kill it.</p></div></div><div class="help-grid"><p><kbd>WASD</kbd> MOVE</p><p><kbd>ARROWS</kbd> AIM + FIRE</p><p><kbd>CLICK / SPACE</kbd> STAND + SHOOT</p><p><kbd>Q</kbd> SPECIAL MAGIC</p><p><kbd>HOLD E</kbd> REVIVE A NEARBY FRIEND</p><p><kbd>ESC / M</kbd> PAUSE SOLO / SOUND</p></div><p>Hold fire to stand still and shoot in eight directions. WASD moves. Hold arrow keys to aim and fire; combine two arrows for diagonals. Mouse aims; click or Space fires. WASD never changes your aim. All aim snaps to 45 degrees. Release arrows and fire to run. For co-op, CREATE CREW and share the code or invite link. On phones, hold FIRE to aim at the nearest visible enemy.</p><button id="help-done" class="primary">BACK TO THE DUNGEON</button></dialog>
+</div>
+<script src="/socket.io/socket.io.js"></script><script type="module" src="/client.js?v=performance2"></script>
+</body>
+</html>
